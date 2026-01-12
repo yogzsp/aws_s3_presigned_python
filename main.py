@@ -9,7 +9,7 @@ load_dotenv()
 AWS_REGION = os.getenv("AWS_REGION")
 BUCKET = os.getenv("S3_BUCKET")
 
-#  CONFIG WAJIB (INI BEDANYA DENGAN YANG GAGAL)
+#  CONFIG WAJIB 
 s3 = boto3.client(
     "s3",
     region_name=AWS_REGION,
@@ -31,7 +31,7 @@ app = FastAPI()
 KTP_FOLDER = "KTP"
 
 
-# ========= UPLOAD =========
+# create presigned upload url
 class UploadBody(BaseModel):
     filename: str
     type: str
@@ -65,7 +65,7 @@ def upload_url(body: UploadBody):
         raise HTTPException(500, "Failed to generate upload URL")
 
 
-# ========= DOWNLOAD =========
+# download file
 @app.get("/download")
 def download_url(key: str):
     if not key:
